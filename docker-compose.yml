@@ -1,0 +1,28 @@
+version: "3"
+services:
+  web:
+    build: ./web
+    environment:
+      - APACHE_RUN_USER=#1000
+    volumes:
+      - ${APP_PATH_HOST}:${APP_PATH_CONTAINER}
+    ports:
+      - ${APP_PORT}:80
+    working_dir: ${APP_PATH_CONTAINER}
+  db:
+    build: ./db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: 123456
+    volumes:
+      - ${DB_PATH_HOST}:${DB_PATH_CONTAINER}
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - ${ADM_PORT}:8080
+  composer:
+    image: composer:1.6
+    volumes:
+      - ${APP_PATH_HOST}:${APP_PATH_CONTAINER}
+    working_dir: ${APP_PATH_CONTAINER}
